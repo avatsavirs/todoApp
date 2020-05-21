@@ -1,0 +1,27 @@
+<div class="container">
+	<mdb-card class="my-2">
+		<mdb-card-body>
+			<mdb-card-title>
+				<h4> {{ todoListItem.title }} </h4>
+			</mdb-card-title>
+			<mdb-card-text>
+				<div class="float-left">
+					<mdb-badge pill="true" primary="true" class="p-1">{{ todoListItem.label }}</mdb-badge>
+					<br>
+					Created on: {{ todoListItem.created_on | date }}
+					<br>
+					Due date: {{ todoListItem.due_on | date }}
+				</div>
+				<div class="float-right">
+					<button type="button" (click)="onComplete()" class="item-btn" mdbBtn color="success" mdbWavesEffect size="sm">
+						<mdb-icon fas icon="check"></mdb-icon>
+					</button>
+					<button type="button" (click)="onDelete()" class="item-btn" mdbBtn color="danger" mdbWavesEffect size="sm">
+						<mdb-icon fas icon="trash-alt"></mdb-icon>
+					</button>
+					<app-edit-item [task]="todoListItem" [index]="index"></app-edit-item>
+				</div>
+			</mdb-card-text>
+		</mdb-card-body>
+	</mdb-card>
+</div>

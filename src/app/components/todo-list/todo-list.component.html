@@ -1,0 +1,4 @@
+<div class="container px-5">
+	<app-todo-list-item *ngFor="let task of tasks; let i = index" [index]="i" [todoListItem]="task"></app-todo-list-item>
+</div>
+<app-spinner *ngIf="isLoading"></app-spinner>
