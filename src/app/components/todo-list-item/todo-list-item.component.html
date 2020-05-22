@@ -7,8 +7,11 @@
 				</mdb-card-title>
 				<mdb-card-text>
 					<div class="float-left">
-						<mdb-badge pill="true" primary="true" class="p-1">{{ todoListItem.label }}</mdb-badge>
-						<br>
+						<mdb-badge style="margin-right: 10px;" pill="true" default="true" class="p-2">{{ todoListItem.label }}</mdb-badge>
+						<mdb-badge *ngIf="+todoListItem.priority === 0" pill="true" primary="true" class="p-2">Low</mdb-badge>
+						<mdb-badge *ngIf="+todoListItem.priority === 1" pill="true" warning="true" class="p-2">Medium </mdb-badge>
+						<mdb-badge *ngIf="+todoListItem.priority === 2" pill="true" danger="true" class="p-2">High </mdb-badge>
+						<br><br>
 						Created on: {{ todoListItem.created_on | date }}
 						<br>
 						Due date: {{ todoListItem.due_on | date }}

@@ -21,6 +21,7 @@ export class TodoListComponent implements OnInit {
     });
     this.taskService.listUpdated.subscribe(list => {
       this.tasks = list;
+      console.log(this.tasks);
       this.isLoading = false;
     });
   }

@@ -51,7 +51,8 @@ export class EditItemComponent implements OnInit {
         ...this.task,
         ...this.editTaskForm.value
       }
-      this.tasksService.updateTask(editedTask, this.index);
+      editedTask.due_on = new Date(editedTask.due_on).getTime();
+      this.tasksService.updateTask(this.task, editedTask);
     } else {
       console.error('Invalid Input');
     }

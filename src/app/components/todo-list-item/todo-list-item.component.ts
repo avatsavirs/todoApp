@@ -13,6 +13,8 @@ export class TodoListItemComponent implements OnInit {
   @Input() todoListItem: TodoListItem;
   @Input() index: number;
   isLoading = false;
+  priority: string;
+
   constructor(private tasksService: TasksService) { }
 
   ngOnInit(): void { 
@@ -20,12 +22,12 @@ export class TodoListItemComponent implements OnInit {
       if (this.index === index) {
         this.isLoading  = true;
       }
-    })
+    });
   }
   onDelete() {
-    this.tasksService.deleteTask(this.todoListItem._id, this.index);
+    this.tasksService.deleteTask(this.todoListItem);
   }
   onComplete() {
-    this.tasksService.markComplete(this.todoListItem._id, this.index);
+    this.tasksService.markComplete(this.todoListItem);
   }
 }
