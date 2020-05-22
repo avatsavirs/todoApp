@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http'
 import { AppComponent } from './app.component';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
@@ -32,6 +33,7 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
     BrowserModule,
     MDBBootstrapModule.forRoot(),
     BrowserAnimationsModule,
+    BsDatepickerModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule
