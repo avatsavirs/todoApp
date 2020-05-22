@@ -12,9 +12,16 @@ export class TodoListItemComponent implements OnInit {
 
   @Input() todoListItem: TodoListItem;
   @Input() index: number;
+  isLoading = false;
   constructor(private tasksService: TasksService) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void { 
+    this.tasksService.isLoading.subscribe(index => {
+      if (this.index === index) {
+        this.isLoading  = true;
+      }
+    })
+  }
   onDelete() {
     this.tasksService.deleteTask(this.todoListItem._id, this.index);
   }

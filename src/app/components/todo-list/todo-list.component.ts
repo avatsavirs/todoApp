@@ -15,7 +15,9 @@ export class TodoListComponent implements OnInit {
   ngOnInit(): void {
     this.taskService.fetchData();
     this.taskService.isLoading.subscribe(val => {
-      this.isLoading = true;
+      if (val === -1){
+        this.isLoading = true;
+      }
     });
     this.taskService.listUpdated.subscribe(list => {
       this.tasks = list;

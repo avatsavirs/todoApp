@@ -15,6 +15,7 @@ import { SearhBarComponent } from './components/searh-bar/searh-bar.component';
 import { EditItemComponent } from './components/edit-item/edit-item.component';
 import { AddTaskComponent } from './components/add-task/add-task.component';
 import { SpinnerComponent } from './components/spinner/spinner.component';
+import { SpinnerSmComponent } from './components/spinner-sm/spinner-sm.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
     SearhBarComponent,
     EditItemComponent,
     AddTaskComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    SpinnerSmComponent
   ],
   imports: [
     BrowserModule,

@@ -10,18 +10,12 @@ export class TasksService {
 
   todoList: TodoListItem[] = [];
   listUpdated = new Subject<TodoListItem[]>();
-  isLoading = new Subject<boolean>();
+  isLoading = new Subject<number>();
 
   constructor(private http: HttpClient) { }
 
   addTask(newTask: TodoListItem) {
-    /* this.todoList.push(newTask);
-    this.http.put('https://todo-application-a7a5c.firebaseio.com/tasks.json', this.todoList).subscribe(
-      response => {
-        this.listUpdated.next(this.todoList.slice());
-      }
-    ) */
-    this.isLoading.next(true);
+    this.isLoading.next(-1);
     this.http.post('https://todo-application-a7a5c.firebaseio.com/tasks.json', newTask)
       .subscribe(
         response => {
@@ -74,6 +68,7 @@ export class TasksService {
   }
 
   updateTask(editedTask: TodoListItem, index: number) {
+    this.isLoading.next(index);
     this.http.put(`https://todo-application-a7a5c.firebaseio.com/tasks/${editedTask._id}.json`, { ...editedTask })
       .subscribe(
         result => {
