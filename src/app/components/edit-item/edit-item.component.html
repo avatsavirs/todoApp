@@ -14,20 +14,24 @@
 			<div class="modal-body mx-3">
 				<form [formGroup]="editTaskForm" (ngSubmit)="onSubmit()">
 					<div class="md-form">
-						<input mdbValidate formControlName="title" type="text" class="form-control" id="title"
-							name="title" mdbInput>
+						<input mdbValidate formControlName="title" type="text" class="form-control" id="title" name="title"
+							mdbInput>
 						<label for="title">Title</label>
 						<mdb-error
 							*ngIf="editTaskForm.get('title').invalid && (editTaskForm.get('title').dirty || editTaskForm.get('title').touched)">
 							This field is required</mdb-error>
 					</div>
 					<div class="md-form">
-						<input mdbValidate formControlName="label" type="text" class="form-control" id="label"
-							name="label" mdbInput>
+						<input mdbValidate formControlName="label" type="text" class="form-control" id="label" name="label"
+							mdbInput>
 						<label for="label">Label</label>
 						<mdb-error
 							*ngIf="editTaskForm.get('label').invalid && (editTaskForm.get('label').dirty || editTaskForm.get('label').touched)">
 							This field is required</mdb-error>
+					</div>
+					<div class="md-form">
+						<input formControlName="due_on" [bsConfig]="bsConfig" type="text" placeholder="Due Date"
+							class="form-control" bsDatepicker>
 					</div>
 					<div>
 						<select mdbValidate formControlName="priority" class="form-control" id="priority">
@@ -37,9 +41,9 @@
 						</select>
 					</div>
 					<div class="modal-footer d-flex justify-content-center">
-						<button [disabled]="editTaskForm.pristine || editTaskForm.invalid" type="submit" mdbBtn
-							color="info" class="waves-light" mdbWavesEffect data-dismiss="modal"
-							aria-label="Close" (click)="frame.hide()">Save</button>
+						<button [disabled]="editTaskForm.pristine || editTaskForm.invalid" type="submit" mdbBtn color="info"
+							class="waves-light" mdbWavesEffect data-dismiss="modal" aria-label="Close"
+							(click)="frame.hide()">Save</button>
 					</div>
 				</form>
 			</div>

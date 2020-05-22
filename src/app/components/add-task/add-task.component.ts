@@ -40,7 +40,7 @@ export class AddTaskComponent implements OnInit {
         [
           Validators.required,
         ]),
-      due_on: new FormControl(null, Validators.required)
+      due_on: new FormControl(new Date(), Validators.required)
     });
   }
   onSubmit() {

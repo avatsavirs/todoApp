@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms'
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
+
 import { TodoListItem } from '../../models/TodoListItem.model'
 import { TasksService } from 'src/app/services/tasks.service';
 @Component({
@@ -12,7 +14,16 @@ export class EditItemComponent implements OnInit {
   @Input() task: TodoListItem;
   @Input() index: number;
   editTaskForm: FormGroup;
-  constructor(private tasksService: TasksService) { }
+  bsConfig: Partial<BsDatepickerConfig>;
+
+  constructor(private tasksService: TasksService) {
+    this.bsConfig = Object.assign({}, {
+      containerClass: 'theme-dark-blue',
+      showWeekNumbers: false,
+      dateInputFormat: 'DD/MM/YYYY',
+      minDate: new Date()
+    });
+  }
 
   ngOnInit(): void {
 
@@ -30,7 +41,8 @@ export class EditItemComponent implements OnInit {
       priority: new FormControl(this.task.priority,
         [
           Validators.required,
-        ])
+        ]),
+      due_on: new FormControl(new Date(this.task.due_on), Validators.required)
     });
   }
   onSubmit() {
