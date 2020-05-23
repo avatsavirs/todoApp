@@ -55,7 +55,9 @@ export class AddTaskComponent implements OnInit {
       newTask.due_on = new Date(newTask.due_on).getTime();
       this.tasksService.addTask(newTask)
       this.addTaskForm.reset(
-        { priority: 0 }
+        { priority: 0,
+          due_on: new Date()
+        }
       )
     }
   }

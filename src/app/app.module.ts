@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { HttpClientModule } from '@angular/common/http'
 import { AppComponent } from './app.component';
@@ -16,6 +17,11 @@ import { EditItemComponent } from './components/edit-item/edit-item.component';
 import { AddTaskComponent } from './components/add-task/add-task.component';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { SpinnerSmComponent } from './components/spinner-sm/spinner-sm.component';
+import { HomeComponent } from './components/home/home.component';
+
+const appRoutes: Routes = [
+  {path: '', component: HomeComponent}
+];
 
 @NgModule({
   declarations: [
@@ -29,7 +35,8 @@ import { SpinnerSmComponent } from './components/spinner-sm/spinner-sm.component
     EditItemComponent,
     AddTaskComponent,
     SpinnerComponent,
-    SpinnerSmComponent
+    SpinnerSmComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -38,8 +45,8 @@ import { SpinnerSmComponent } from './components/spinner-sm/spinner-sm.component
     BsDatepickerModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
-    
+    HttpClientModule,
+    RouterModule.forRoot(appRoutes)
   ],
   providers: [],
   bootstrap: [AppComponent]

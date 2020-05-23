@@ -1,15 +1,7 @@
 <app-header></app-header>
 <div class="container">
   <main>
-    <div class="row">
-      <div class="col-lg-11">
-        <app-searh-bar></app-searh-bar>
-      </div>
-      <div class="col-lg-1 pt-3">
-        <app-add-task class="float-right" mdbTooltip="Add Task" placement="bottom"></app-add-task>
-      </div>
-    </div>
-    <app-todo-list></app-todo-list>
+    <router-outlet></router-outlet>
   </main>
 </div>
 <app-footer></app-footer>
