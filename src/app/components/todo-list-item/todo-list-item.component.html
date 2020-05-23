@@ -7,7 +7,8 @@
 				</mdb-card-title>
 				<mdb-card-text>
 					<div class="float-left">
-						<mdb-badge style="margin-right: 10px;" pill="true" default="true" class="p-2">{{ todoListItem.label }}</mdb-badge>
+						<mdb-badge style="margin-right: 10px;" pill="true" default="true" class="p-2">{{ todoListItem.label }}
+						</mdb-badge>
 						<mdb-badge *ngIf="+todoListItem.priority === 0" pill="true" primary="true" class="p-2">Low</mdb-badge>
 						<mdb-badge *ngIf="+todoListItem.priority === 1" pill="true" warning="true" class="p-2">Medium </mdb-badge>
 						<mdb-badge *ngIf="+todoListItem.priority === 2" pill="true" danger="true" class="p-2">High </mdb-badge>
@@ -17,15 +18,15 @@
 						Due date: {{ todoListItem.due_on | date }}
 					</div>
 					<div class="float-right">
-						<button type="button" (click)="onComplete()" class="item-btn" mdbBtn color="success"
-							mdbWavesEffect size="sm">
+						<button type="button" (click)="onComplete()" class="item-btn" mdbBtn color="success" mdbWavesEffect
+							size="sm" mdbTooltip="Mark as completed" placement="top">
 							<mdb-icon fas icon="check"></mdb-icon>
 						</button>
-						<button type="button" (click)="onDelete()" class="item-btn" mdbBtn color="danger" mdbWavesEffect
-							size="sm">
+						<button type="button" (click)="onDelete()" class="item-btn" mdbBtn color="danger" mdbWavesEffect size="sm"
+							mdbTooltip="Delete" placement="top">
 							<mdb-icon fas icon="trash-alt"></mdb-icon>
 						</button>
-						<app-edit-item [task]="todoListItem" [index]="index"></app-edit-item>
+						<app-edit-item [task]="todoListItem" [index]="index" mdbTooltip="Edit" placement="top"></app-edit-item>
 					</div>
 				</mdb-card-text>
 			</div>
