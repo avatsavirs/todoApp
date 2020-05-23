@@ -18,9 +18,11 @@ import { AddTaskComponent } from './components/add-task/add-task.component';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { SpinnerSmComponent } from './components/spinner-sm/spinner-sm.component';
 import { HomeComponent } from './components/home/home.component';
+import { SignupComponent } from './components/signup/signup.component';
 
 const appRoutes: Routes = [
-  {path: '', component: HomeComponent}
+  {path: '', component: HomeComponent},
+  {path: 'signup', component: SignupComponent}
 ];
 
 @NgModule({
@@ -36,7 +38,8 @@ const appRoutes: Routes = [
     AddTaskComponent,
     SpinnerComponent,
     SpinnerSmComponent,
-    HomeComponent
+    HomeComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,
