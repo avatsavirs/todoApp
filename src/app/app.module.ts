@@ -2,11 +2,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
-import { HttpClientModule } from '@angular/common/http'
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
 import { AppComponent } from './app.component';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
@@ -19,10 +20,15 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
 import { SpinnerSmComponent } from './components/spinner-sm/spinner-sm.component';
 import { HomeComponent } from './components/home/home.component';
 import { SignupComponent } from './components/signup/signup.component';
+import { SigninComponent } from './components/signin/signin.component';
+
+import { AuthInterceptorService } from './services/auth-interceptor.service';
+import { AuthGuardService } from './guards/auth-guard.service';
 
 const appRoutes: Routes = [
-  {path: '', component: HomeComponent},
-  {path: 'signup', component: SignupComponent}
+  {path: '', canActivate: [AuthGuardService], component: HomeComponent},
+  {path: 'signup', component: SignupComponent},
+  {path: 'signin', component: SigninComponent}
 ];
 
 @NgModule({
@@ -39,7 +45,8 @@ const appRoutes: Routes = [
     SpinnerComponent,
     SpinnerSmComponent,
     HomeComponent,
-    SignupComponent
+    SignupComponent,
+    SigninComponent
   ],
   imports: [
     BrowserModule,
@@ -51,7 +58,7 @@ const appRoutes: Routes = [
     HttpClientModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [],
+  providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

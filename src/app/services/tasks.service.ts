@@ -79,7 +79,7 @@ export class TasksService {
         result => {
           this.todoList[index] = {...editedTask, _id: task._id};
           this.listUpdated.next(this.todoList.slice());
-          console.log(this.todoList);
+          // console.log(this.todoList);
         });
   }
 }
