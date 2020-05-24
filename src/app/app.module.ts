@@ -24,6 +24,7 @@ import { SigninComponent } from './components/signin/signin.component';
 
 import { AuthInterceptorService } from './services/auth-interceptor.service';
 import { AuthGuardService } from './guards/auth-guard.service';
+import { FilterBarComponent } from './components/filter-bar/filter-bar.component';
 
 const appRoutes: Routes = [
   {path: '', canActivate: [AuthGuardService], component: HomeComponent},
@@ -46,7 +47,8 @@ const appRoutes: Routes = [
     SpinnerSmComponent,
     HomeComponent,
     SignupComponent,
-    SigninComponent
+    SigninComponent,
+    FilterBarComponent
   ],
   imports: [
     BrowserModule,
