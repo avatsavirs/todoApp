@@ -29,8 +29,12 @@
 							This field is required</mdb-error>
 					</div>
 					<div class="md-form">
-						<input formControlName="due_on" [bsConfig]="bsConfig" type="text" placeholder="Due Date"
-							class="form-control" bsDatepicker>
+						<input formControlName="due_on" [bsConfig]="bsConfig" type="text"
+							class="form-control" bsDatepicker mdbValidate mdbInput id="due_on">
+							<label for="due_on">Due Date</label>
+							<mdb-error
+							*ngIf="addTaskForm.get('due_on').invalid && (addTaskForm.get('due_on').dirty || addTaskForm.get('due_on').touched)">
+							Please Select a Valid Future Date</mdb-error>
 					</div>
 					<div class="md-form">
 						<select mdbValidate formControlName="priority" class="form-control" id="priority">

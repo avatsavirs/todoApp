@@ -21,7 +21,7 @@ export class EditItemComponent implements OnInit {
       containerClass: 'theme-dark-blue',
       showWeekNumbers: false,
       dateInputFormat: 'DD/MM/YYYY',
-      minDate: new Date()
+      minDate: new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
     });
   }
 
@@ -42,9 +42,14 @@ export class EditItemComponent implements OnInit {
         [
           Validators.required,
         ]),
-      due_on: new FormControl(new Date(this.task.due_on), Validators.required)
+      due_on: new FormControl(new Date(this.task.due_on), this.dateValidator)
     });
   }
+
+  dateValidator(control: FormControl) {
+    return (new Date(control.value) < new Date()) ? { 'invalid': 1 } : null;
+  }
+
   onSubmit() {
     if (this.editTaskForm.valid) {
       const editedTask = {

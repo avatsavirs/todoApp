@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms'
+import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms'
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 
 import { TodoListItem } from '../../models/TodoListItem.model'
 import { TasksService } from 'src/app/services/tasks.service';
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-add-task',
   templateUrl: './add-task.component.html',
@@ -20,7 +21,7 @@ export class AddTaskComponent implements OnInit {
       containerClass: 'theme-dark-blue',
       showWeekNumbers: false,
       dateInputFormat: 'DD/MM/YYYY',
-      minDate: new Date()
+      minDate: new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
     });
   }
 
@@ -40,9 +41,14 @@ export class AddTaskComponent implements OnInit {
         [
           Validators.required,
         ]),
-      due_on: new FormControl(new Date(), Validators.required)
+      due_on: new FormControl(new Date(new Date().getTime() + 24 * 60 * 60 * 1000), [this.dateValidator])
     });
   }
+
+  dateValidator(control: FormControl) {
+    return (new Date(control.value) < new Date()) ? { 'invalid': 1 } : null;
+  }
+
   onSubmit() {
     if (this.addTaskForm.status === 'INVALID') {
       console.error('Form Invalid');
@@ -52,11 +58,13 @@ export class AddTaskComponent implements OnInit {
         created_on: Date.now(),
         is_completed: false
       }
+      console.log(new Date(newTask.due_on) >= new Date(newTask.created_on));
       newTask.due_on = new Date(newTask.due_on).getTime();
       this.tasksService.addTask(newTask)
       this.addTaskForm.reset(
-        { priority: 0,
-          due_on: new Date()
+        {
+          priority: 0,
+          due_on: new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
         }
       )
     }
