@@ -1,7 +1,7 @@
 <div class="container">
 	<mdb-card class="my-2">
 		<mdb-card-body>
-			<div *ngIf="!isLoading">
+			<div @exitTrigger *ngIf="!isLoading">
 				<mdb-card-title>
 					<h4> {{ todoListItem.title }} </h4>
 				</mdb-card-title>

@@ -77,9 +77,15 @@ export class TasksService {
     this.http.put(`https://todo-application-a7a5c.firebaseio.com/tasks/${task._id}.json`, { ...editedTask })
       .subscribe(
         result => {
-          this.todoList[index] = {...editedTask, _id: task._id};
+          // this.todoList[index] = {...editedTask, _id: task._id};
+          this.todoList[index]._id = editedTask._id;
+          this.todoList[index].title = editedTask.title;
+          this.todoList[index].created_on = editedTask.created_on;
+          this.todoList[index].due_on = editedTask.due_on;
+          this.todoList[index].label = editedTask.label;
+          this.todoList[index].priority = editedTask.priority;
+          this.todoList[index].is_completed = editedTask.is_completed;
           this.listUpdated.next(this.todoList.slice());
-          // console.log(this.todoList);
         });
   }
 }
