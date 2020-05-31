@@ -18,7 +18,9 @@ interface AuthResponseData {
   success: true,
   message: {
     name: string,
-    user_id: string
+    _id: string,
+    email: string,
+    email_status: boolean
   }
 }
 
@@ -26,37 +28,40 @@ interface AuthResponseData {
   providedIn: 'root'
 })
 export class SignupService {
-  
+
   user = new BehaviorSubject<User>(null);
   constructor(private http: HttpClient, private router: Router) { }
-
-  signup({name, email, password}) {
+// http://localhost:3000
+// https://stackhack-todo.herokuapp.com
+  signup({ name, email, password }) {
     return this.http.post<AuthResponseData>('https://stackhack-todo.herokuapp.com/api/signup', {
       name,
       email,
       password,
-    }, {observe: 'response'})
-    .pipe(tap(res=> {
-      console.log(res.body.message);
-      const token = res.headers.get('X-Auth-Token');
-      const user = new User(res.body.message.name, 'test@test.com', res.body.message.user_id, token, new Date(Date.now() + 30*24*60*1000));
-      this.user.next(user);
-      localStorage.setItem('userData', JSON.stringify(user));
-    }));
+    }, { observe: 'response' })
+      .pipe(tap(res => {
+        console.log(res.body.message);
+        const token = res.headers.get('X-Auth-Token');
+        const user = new User(res.body.message.name, res.body.message.email, res.body.message._id, res.body.message.email_status, token, new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000));
+        console.log(user);
+        this.user.next(user);
+        localStorage.setItem('userData', JSON.stringify(user));
+      }));
   }
 
-  signin({email, password}) {
+  signin({ email, password }) {
     return this.http.post<AuthResponseData>('https://stackhack-todo.herokuapp.com/api/login', {
       email,
       password,
-    }, {observe: 'response'})
-    .pipe(tap(res=> {
-      const token = res.headers.get('X-Auth-Token');
-      console.log(res.body.message)
-      const user = new User(res.body.message.name, 'test@test.com', res.body.message.user_id, token, new Date(Date.now() + 30*24*60*1000));
-      this.user.next(user);
-      localStorage.setItem('userData', JSON.stringify(user));
-    }))
+    }, { observe: 'response' })
+      .pipe(tap(res => {
+        const token = res.headers.get('X-Auth-Token');
+        console.log(res.body.message);
+        const user = new User(res.body.message.name, res.body.message.email, res.body.message._id, res.body.message.email_status, token, new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000));
+        console.log(user);
+        this.user.next(user);
+        localStorage.setItem('userData', JSON.stringify(user));
+      }))
   }
 
   logout() {
@@ -68,8 +73,8 @@ export class SignupService {
   autoLogin() {
     const user = JSON.parse(localStorage.getItem('userData'));
     if (!user) return;
-    const loadedUser = new User(user.name, user.email, user.id, user._token, new Date(user._tokenExp))
-    if(loadedUser.token) {
+    const loadedUser = new User(user.name, user.email, user.id, user.email_status ,user._token, new Date(user._tokenExp))
+    if (loadedUser.token) {
       this.user.next(loadedUser);
     }
   }

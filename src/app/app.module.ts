@@ -25,11 +25,14 @@ import { SigninComponent } from './components/signin/signin.component';
 import { AuthInterceptorService } from './services/auth-interceptor.service';
 import { AuthGuardService } from './guards/auth-guard.service';
 import { FilterBarComponent } from './components/filter-bar/filter-bar.component';
+import { EmailVerificationComponent } from './components/email-verification/email-verification.component';
+import { VerificationGuardGuard } from './guards/verification-guard.guard';
 
 const appRoutes: Routes = [
-  {path: '', canActivate: [AuthGuardService], component: HomeComponent},
+  {path: '', canActivate: [AuthGuardService, VerificationGuardGuard], component: HomeComponent},
   {path: 'signup', component: SignupComponent},
-  {path: 'signin', component: SigninComponent}
+  {path: 'signin', component: SigninComponent},
+  {path: 'email-verification', component: EmailVerificationComponent}
 ];
 
 @NgModule({
@@ -48,7 +51,8 @@ const appRoutes: Routes = [
     HomeComponent,
     SignupComponent,
     SigninComponent,
-    FilterBarComponent
+    FilterBarComponent,
+    EmailVerificationComponent
   ],
   imports: [
     BrowserModule,
