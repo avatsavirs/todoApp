@@ -37,7 +37,7 @@ export class SignupService {
       password,
     }, {observe: 'response'})
     .pipe(tap(res=> {
-      // const user = new User(res.displayName, res.email, res.localId, res.idToken, new Date(Date.now() + +res.expiresIn*1000));
+      console.log(res.body.message);
       const token = res.headers.get('X-Auth-Token');
       const user = new User(res.body.message.name, 'test@test.com', res.body.message.user_id, token, new Date(Date.now() + 30*24*60*1000));
       this.user.next(user);
@@ -52,6 +52,7 @@ export class SignupService {
     }, {observe: 'response'})
     .pipe(tap(res=> {
       const token = res.headers.get('X-Auth-Token');
+      console.log(res.body.message)
       const user = new User(res.body.message.name, 'test@test.com', res.body.message.user_id, token, new Date(Date.now() + 30*24*60*1000));
       this.user.next(user);
       localStorage.setItem('userData', JSON.stringify(user));

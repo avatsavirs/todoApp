@@ -57,18 +57,17 @@ export class TasksService {
         }
       )
   }
-  
+
   addTask(newTask: TodoListItem) {
     this.isLoading.next(-1);
     this.http.post<addTaskResponseData>('https://stackhack-todo.herokuapp.com/api/todo', newTask)
-      .pipe(map( res => {
+      .pipe(map(res => {
         if (res.success) {
           return res.message;
         }
       }))
       .subscribe(
         response => {
-          // console.log(response);
           newTask._id = response._id;
           this.todoList.push(newTask);
           this.listUpdated.next(this.todoList.slice());
@@ -91,27 +90,22 @@ export class TasksService {
   }
 
   markComplete(task: TodoListItem) {
-    const index = this.todoList.indexOf(task);
-    /* this.http.patch(`https://todo-application-a7a5c.firebaseio.com/tasks/${task._id}.json`, {
-      is_completed: true,
-      completed_on: Date.now()
-    })
-      .subscribe(result => {
-        this.todoList[index].is_completed = result['is_completed'];
-        this.todoList[index].completed_on = result['completed_on'];
-      }) */
-      task.is_completed = true;
-      task.completed_on = Date.now();
-      this.http.put(`https://stackhack-todo.herokuapp.com/api/todo/${task._id}`, task)
-      .subscribe(res => {
-        console.log(res);
-      })
+    if (task.is_completed) return;
+    const req = {
+      title: task.title,
+      label: task.label,
+      due_on: task.due_on,
+      priority: task.priority,
+      is_completed: true
+    }
+    this.http.put(`https://stackhack-todo.herokuapp.com/api/todo/${task._id}`, req)
+      .subscribe();
   }
 
   updateTask(task: TodoListItem, editedTask: TodoListItem) {
     const index = this.todoList.indexOf(task);
     this.isLoading.next(index);
-    
+
     const req = {
       title: editedTask.title,
       label: editedTask.label,
@@ -130,7 +124,6 @@ export class TasksService {
           this.todoList[index].priority = editedTask.priority;
           this.todoList[index].is_completed = editedTask.is_completed;
           this.listUpdated.next(this.todoList.slice());
-          // console.log(result);
         });
   }
 }
