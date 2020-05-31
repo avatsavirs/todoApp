@@ -99,7 +99,11 @@ export class TasksService {
       is_completed: true
     }
     this.http.put(`https://stackhack-todo.herokuapp.com/api/todo/${task._id}`, req)
-      .subscribe();
+      .subscribe(() => {
+        console.log('updated');
+      }, err => {
+        console.log(err);
+      });
   }
 
   updateTask(task: TodoListItem, editedTask: TodoListItem) {
