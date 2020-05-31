@@ -13,6 +13,7 @@ export class SignupComponent implements OnInit {
   error: any = null;
   errorMsg: string = null;
   signupForm: FormGroup;
+  submitBtnDisabled = false;
 
   constructor(private signupService: SignupService, private router: Router) { }
 
@@ -41,16 +42,21 @@ export class SignupComponent implements OnInit {
       return;
     }
     // this.signupForm.reset();
+    this.submitBtnDisabled=true
     this.error = null;
     this.signupService.signup(this.signupForm.value)
-    .subscribe(res => {
-      // console.log(res);
-      this.router.navigate(['/']);
-    },err => {
-      this.error = err.error.error;
-      if (this.error.code===400) {
-        this.errorMsg = 'Email already registered'
+    .subscribe(
+      res => {
+        console.log(res);
+        this.router.navigate(['/']);
+      },
+      err => {
+        this.submitBtnDisabled = false;
+        this.error = err.error;
+        if (err.status===400) {
+          this.errorMsg = 'Email already registered';
+        }
       }
-    });
+    );
   }
 }

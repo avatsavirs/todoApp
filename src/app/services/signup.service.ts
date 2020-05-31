@@ -5,13 +5,21 @@ import { User } from '../models/User.model';
 import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 
-interface AuthResponseData {
+/* interface AuthResponseData {
   idToken: string,
   email: string,
   refreshToken: string,
   expiresIn: string,
   localId: string,
   displayName: string
+} */
+
+interface AuthResponseData {
+  success: true,
+  message: {
+    name: string,
+    user_id: string
+  }
 }
 
 @Injectable({
@@ -23,27 +31,28 @@ export class SignupService {
   constructor(private http: HttpClient, private router: Router) { }
 
   signup({name, email, password}) {
-    return this.http.post<AuthResponseData>('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyA760rVlSovzYOMCd3Zk37lFYxs0z9GqVc', {
-      displayName: name,
+    return this.http.post<AuthResponseData>('https://stackhack-todo.herokuapp.com/api/signup', {
+      name,
       email,
       password,
-      returnSecureToken: true
-    })
+    }, {observe: 'response'})
     .pipe(tap(res=> {
-      const user = new User(res.displayName, res.email, res.localId, res.idToken, new Date(Date.now() + +res.expiresIn*1000));
+      // const user = new User(res.displayName, res.email, res.localId, res.idToken, new Date(Date.now() + +res.expiresIn*1000));
+      const token = res.headers.get('X-Auth-Token');
+      const user = new User(res.body.message.name, 'test@test.com', res.body.message.user_id, token, new Date(Date.now() + 30*24*60*1000));
       this.user.next(user);
       localStorage.setItem('userData', JSON.stringify(user));
     }));
   }
 
   signin({email, password}) {
-    return this.http.post<AuthResponseData>('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyA760rVlSovzYOMCd3Zk37lFYxs0z9GqVc', {
+    return this.http.post<AuthResponseData>('https://stackhack-todo.herokuapp.com/api/login', {
       email,
       password,
-      returnSecureToken: true
-    })
+    }, {observe: 'response'})
     .pipe(tap(res=> {
-      const user = new User(res.displayName, res.email, res.localId, res.idToken, new Date(Date.now() + +res.expiresIn*1000));
+      const token = res.headers.get('X-Auth-Token');
+      const user = new User(res.body.message.name, 'test@test.com', res.body.message.user_id, token, new Date(Date.now() + 30*24*60*1000));
       this.user.next(user);
       localStorage.setItem('userData', JSON.stringify(user));
     }))

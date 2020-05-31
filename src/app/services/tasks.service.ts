@@ -3,9 +3,32 @@ import { TodoListItem } from '../models/TodoListItem.model';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
+
+interface addTaskResponseData {
+  success: boolean,
+  message: {
+    created_on: number,
+    is_completed: boolean,
+    _id: string,
+    title: string,
+    label: string,
+    due_on: number,
+    priority: number,
+    user_id: string,
+    sub_task: [],
+  }
+}
+
+interface fetchResponseData {
+  success: string,
+  tasks: TodoListItem[]
+}
+
 @Injectable({
   providedIn: 'root'
 })
+
+
 export class TasksService {
 
   todoList: TodoListItem[] = [];
@@ -15,33 +38,44 @@ export class TasksService {
   constructor(private http: HttpClient) { }
 
   fetchData() {
-    this.http.get<TodoListItem[]>('https://todo-application-a7a5c.firebaseio.com/tasks.json')
-      .pipe(map(tasks => {
-        if (tasks) {
-          tasks = Object.keys(tasks).map(i => {
-            return { ...tasks[i], _id: i }
-          })
+    this.http.get<fetchResponseData>('https://stackhack-todo.herokuapp.com/api/todo')
+      .pipe(map(res => {
+        if (res.success) {
+          return res.tasks;
         } else {
-          tasks = [];
+          return [];
         }
-        return tasks;
       }))
       .subscribe(
         tasks => {
           this.todoList = tasks;
           this.listUpdated.next(this.todoList.slice());
+        },
+        err => {
+          console.log(err.error.message); // 401(for unverified accounts)
+          this.listUpdated.next([]);
         }
       )
   }
-
+  
   addTask(newTask: TodoListItem) {
     this.isLoading.next(-1);
-    this.http.post('https://todo-application-a7a5c.firebaseio.com/tasks.json', newTask)
+    this.http.post<addTaskResponseData>('https://stackhack-todo.herokuapp.com/api/todo', newTask)
+      .pipe(map( res => {
+        if (res.success) {
+          return res.message;
+        }
+      }))
       .subscribe(
         response => {
-          newTask._id = response['name'];
+          // console.log(response);
+          newTask._id = response._id;
           this.todoList.push(newTask);
           this.listUpdated.next(this.todoList.slice());
+        },
+        err => {
+          console.log(err.error.message);
+          this.listUpdated.next(this.todoList.slice())
         }
       )
   }
@@ -50,34 +84,44 @@ export class TasksService {
     const index = this.todoList.indexOf(task);
     this.todoList.splice(index, 1);
     this.listUpdated.next(this.todoList.slice());
-    this.http.delete(`https://todo-application-a7a5c.firebaseio.com/tasks/${task._id}.json`)
-      .subscribe(
-        /* () => {
-          this.todoList.splice(index, 1);
-          this.listUpdated.next(this.todoList.slice());
-        } */);
+    this.http.delete(`https://stackhack-todo.herokuapp.com/api/todo/${task._id}`)
+      .subscribe(res => {
+        console.log(res);
+      });
   }
 
   markComplete(task: TodoListItem) {
     const index = this.todoList.indexOf(task);
-    this.http.patch(`https://todo-application-a7a5c.firebaseio.com/tasks/${task._id}.json`, {
+    /* this.http.patch(`https://todo-application-a7a5c.firebaseio.com/tasks/${task._id}.json`, {
       is_completed: true,
       completed_on: Date.now()
     })
       .subscribe(result => {
         this.todoList[index].is_completed = result['is_completed'];
         this.todoList[index].completed_on = result['completed_on'];
+      }) */
+      task.is_completed = true;
+      task.completed_on = Date.now();
+      this.http.put(`https://stackhack-todo.herokuapp.com/api/todo/${task._id}`, task)
+      .subscribe(res => {
+        console.log(res);
       })
   }
 
   updateTask(task: TodoListItem, editedTask: TodoListItem) {
     const index = this.todoList.indexOf(task);
     this.isLoading.next(index);
-    editedTask._id = undefined;
-    this.http.put(`https://todo-application-a7a5c.firebaseio.com/tasks/${task._id}.json`, { ...editedTask })
+    
+    const req = {
+      title: editedTask.title,
+      label: editedTask.label,
+      due_on: editedTask.due_on,
+      priority: editedTask.priority,
+      is_completed: editedTask.is_completed
+    }
+    this.http.put(`https://stackhack-todo.herokuapp.com/api/todo/${task._id}`, req)
       .subscribe(
         result => {
-          // this.todoList[index] = {...editedTask, _id: task._id};
           this.todoList[index]._id = editedTask._id;
           this.todoList[index].title = editedTask.title;
           this.todoList[index].created_on = editedTask.created_on;
@@ -86,6 +130,7 @@ export class TasksService {
           this.todoList[index].priority = editedTask.priority;
           this.todoList[index].is_completed = editedTask.is_completed;
           this.listUpdated.next(this.todoList.slice());
+          // console.log(result);
         });
   }
 }

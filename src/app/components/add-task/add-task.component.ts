@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms'
+import { FormGroup, FormControl, Validators } from '@angular/forms'
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 
 import { TodoListItem } from '../../models/TodoListItem.model'
 import { TasksService } from 'src/app/services/tasks.service';
-import { Observable } from 'rxjs';
 @Component({
   selector: 'app-add-task',
   templateUrl: './add-task.component.html',
@@ -55,10 +54,9 @@ export class AddTaskComponent implements OnInit {
     } else if (this.addTaskForm.status === 'VALID') {
       const newTask: TodoListItem = {
         ...this.addTaskForm.value,
-        created_on: Date.now(),
-        is_completed: false
+        // created_on: Date.now(),
+        is_completed: 0
       }
-      console.log(new Date(newTask.due_on) >= new Date(newTask.created_on));
       newTask.due_on = new Date(newTask.due_on).getTime();
       this.tasksService.addTask(newTask)
       this.addTaskForm.reset(

@@ -13,6 +13,7 @@ export class SigninComponent implements OnInit {
   error: any = null;
   errorMsg: string = null;
   signinForm: FormGroup;
+  submitBtnDisabled = false;
 
   constructor(private signupService: SignupService, private router: Router) { }
 
@@ -28,21 +29,24 @@ export class SigninComponent implements OnInit {
       console.error('INVALID FORM');
       return;
     }
-    // this.signinForm.reset();
     this.error = null;
+    this.submitBtnDisabled = true;
     this.signupService.signin(this.signinForm.value)
-    .subscribe(res => {
-      // console.log(res);
-      this.router.navigate(['/']);
-    },err => {
-      // console.log(err); 
-      this.error = err.error.error;
-      if (this.error.message==="INVALID_PASSWORD") {
-        this.errorMsg = 'Invalid Password'
-      }
-      if (this.error.message==="EMAIL_NOT_FOUND") {
-        this.errorMsg = 'This email is not registered'
-      }
-    });
+      .subscribe(
+        res => {
+          this.router.navigate(['/']);
+        },
+        err => {
+          this.error = err.error;
+          this.errorMsg = 'Invalid login credentials';
+          this.submitBtnDisabled = false;
+          /* if (this.error.message==="INVALID_PASSWORD") {
+            this.errorMsg = 'Invalid Password'
+          }
+          if (this.error.message==="EMAIL_NOT_FOUND") {
+            this.errorMsg = 'This email is not registered'
+          } */
+        }
+      );
   }
 }
