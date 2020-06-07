@@ -29,7 +29,7 @@ import { EmailVerificationComponent } from './components/email-verification/emai
 import { VerificationGuardGuard } from './guards/verification-guard.guard';
 
 const appRoutes: Routes = [
-  {path: '', canActivate: [AuthGuardService, VerificationGuardGuard], component: HomeComponent},
+  {path: '', canActivate: [AuthGuardService, /* VerificationGuardGuard */], component: HomeComponent},
   {path: 'signup', component: SignupComponent},
   {path: 'signin', component: SigninComponent},
   {path: 'email-verification', component: EmailVerificationComponent}
